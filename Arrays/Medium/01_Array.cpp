@@ -83,6 +83,84 @@ void dutch(int arr[],int n){
         }
     }
 }
+
+// 3.	Majority Element (>n/2 times)
+//brute force- take eaach element and check for majority 
+// TC==> o(n^2) SC==>o(1)
+
+//better- TC==>o(nlogn)  SC==>o(n)
+int major1(int arr[],int n){
+    map<int,int>mpp;
+    for(int i=0;i<n;i++){
+        mpp[arr[i]]++;
+    }
+    for(auto it:mpp){
+        if(it.second>n/2)return it.first;
+    }
+    return -1;
+}
+
+// optimal- TC==>o(n)  SC==>o(1)
+// Moore's voting algorithm
+int moore(int arr[],int n){
+    int cnt=0;
+    int element;
+    for(int i=0;i<n;i++){
+       if(cnt==0){
+        element=arr[i];
+        cnt++;
+       }
+       else if(arr[i]==element){
+        cnt++;
+       }
+       else cnt--;
+    }
+    // tthis is to check only when question say may have majority element
+    int cnt1=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]==element) cnt1++;
+        if(cnt1>n/2)return element;
+    }
+    return -1;
+}
+
+
+// 4. Kadane's Algorithm, maximum subarray sum or Print subarray with maximum subarray sum 
+//brute force- take all subarray then find max sum subarray 
+//Tc==>o(n^2)  SC==>o(1)
+
+//optimal- TC==>o(n)  SC==>o(1)
+//Kadane's Algorithm
+int kadane(int arr[],int n){
+    int maxi=INT_MIN;
+    int sum=0;
+    int start=-1,end=-1;
+    for(int i=0;i<n;i++){
+        if(sum==0) start=i;
+        sum+=arr[i];
+         if (sum>maxi) maxi=sum; end=i;
+        if(sum<0)sum=0;
+    }
+    // this part is for returning subarray
+    for(int i=start;i<end;i++){
+        cout<<arr[i]<<" ";
+    }
+    return maxi;
+}
+
+
+// 5. Stock Buy and Sell -  TC==>o(n)  SC==>o(1)
+int stock(int arr[],int n){
+    int mini=arr[0];
+    int profit=0;
+    for(int i=1;i<n;i++){
+        int cost =arr[i]-mini;
+        profit=max(profit,cost);
+        mini=min(mini,arr[i]);
+    }
+    return profit;
+}
+
 int main(){
     int n=5;
     int arr[]={1,2,6,5,8};
@@ -92,5 +170,11 @@ int main(){
     int arr1[]={0,1,2,2,1,0,0,1,1,2,1};
    dutch(arr1,11);
      for(auto it:arr1)cout<<it<<" ";
+     int arr2[]={2,2,2,4,6,8,2,1,2,2};
+     cout<<moore(arr2,10);
+    int arr1[]={-2,-3,4,-1,-2,1,5,-3};
+    cout<<kadane(arr1,8);
+    int stocks[]={7,1,5,3,6,4};// buys in 1 and sells in 6 so profit is of 5
+    cout<<stock(stocks,6);
     return 0;
 }
