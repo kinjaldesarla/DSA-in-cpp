@@ -112,15 +112,61 @@ vector<int> leaders(int arr[],int n){
     return ans;
 }
 
+// 4. 	Longest Consecutive Sequence in an Array  
+// brute force- take each element x and then search x+1 element in array   TC==>o(n^2)  Sc==>o(1)
+//better-  TC==>o(nlogn + n)  SC==>o(1)
+int longest_consecutive(int arr[],int n){
+    sort(arr,arr+n);
+    int longest=1;
+    int element=INT_MIN;
+    int cnt=0;
+    for(int i=0;i<n;i++){
+       if(arr[i]-1==element){
+        element=arr[i];
+        cnt++;
+       }
+       else if(arr[i] !=element){
+        element=arr[i];
+        cnt=1;
+       }
+      longest=max(longest,cnt);
+    }
+    return longest;
+}
+
+//optimal -  TC==>o(3n)   SC==>o(n);
+int longest_consecutive2(int arr[],int n){
+    unordered_set<int>st;
+    int longest=1;
+    int cnt=0;
+    for(int i=0;i<n;i++){
+        st.insert(arr[i]);
+    }
+    for(auto it:st){                  // overal interation for this will be o(2n) not o(n^2)
+        if(st.find(it-1) == st.end()){
+            int x=it;
+            cnt=1;
+           while(st.find(x+1) !=st.end()){  // this will not run for o(n) 
+              x=x+1;
+              cnt++;
+            }
+         longest =max(longest,cnt);
+        }
+    }
+    return longest;
+}
+
 int main(){
-    int arr[]={3,-2,-4,4,1,-6,-2,-1};
-    rearrange3(arr,8);
-    for(auto it:arr)cout<<it<<" ";
-    int arr1[]={2,1,5,4,3,0,0};
-    nextpermut(arr1,7);
-    for(auto it:arr1)cout<<it<<" ";
-    int lead[]={10,22,12,3,0,6};
-    vector<int> vt=leaders(lead,6);
-    for(auto it:vt)cout<<it<<" ";
+    // int arr[]={3,-2,-4,4,1,-6,-2,-1};
+    // rearrange3(arr,8);
+    // for(auto it:arr)cout<<it<<" ";
+    // int arr1[]={2,1,5,4,3,0,0};
+    // nextpermut(arr1,7);
+    // for(auto it:arr1)cout<<it<<" ";
+    // int lead[]={10,22,12,3,0,6};
+    // vector<int> vt=leaders(lead,6);
+    // for(auto it:vt)cout<<it<<" ";
+    int arr1[]={102,4,100,1,101,3,2,1,1};
+    cout<< longest_consecutive2(arr1,9);
      return 0;
 }
