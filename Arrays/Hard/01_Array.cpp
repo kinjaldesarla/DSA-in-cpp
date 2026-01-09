@@ -199,15 +199,36 @@ vector<vector<int>> four_sum1(int arr[],int n,int target){
     return ans;
 }
 
+
+// 5. Count number of subarrays with given xor K
+// brute force- generate all subarray and then check   TC==> o(n^2)  SC==>o(1)
+
+// optimal -  x=xr^k  TC==>o(n) or nlogn  SC==>o(n)
+int subarray_xor(int arr[],int n,int k){
+    map<int,int>mpp;
+    mpp[0]=1;
+    int xr=0;
+    int cnt=0;
+    for(int i=0;i<n;i++){
+        xr=xr^arr[i];
+        int x=xr^k;
+        cnt +=mpp[x];
+        mpp[xr]+=1;
+    }
+    return cnt;
+}
+
 int main(){
-    //  int arr[]={1,1,1,2,2,3,3,3};
-    //  vector<int> v=moores(arr,8);
-    //  for(auto it:v)cout<<it<<' ';
+     int arr[]={1,1,1,2,2,3,3,3};
+     vector<int> v=moores(arr,8);
+     for(auto it:v)cout<<it<<' ';
     int arr1[]={1,0,-1,0,-2,2};
     vector<vector<int>>ans=four_sum1(arr1,6,0);
     for(auto it:ans){
         for(auto itt:it) cout<<itt<<" ";
         cout<<endl;
     }
+    int arr2[]={4,2,2,6,4};
+    cout<<subarray_xor(arr2,5,6);
      return 0;
 }
