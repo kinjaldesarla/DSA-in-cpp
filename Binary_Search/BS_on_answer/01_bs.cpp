@@ -139,6 +139,20 @@ while(low<=high){
 return low;
 }
 
+// 7. Kth Missing Positive Number
+// missing=arr[high]-high-1; remaining=k-missing; kth=arr[high]+remaining
+//therefore   kth=arr[high]+k-arr[high]+high+1   ==>   kth=k+low;
+int kth_number(int arr[],int n,int k){
+    int low=0,high=n-1;
+    while(low<=high){
+        int mid=(low+high)/2;
+        int num=arr[mid]-(mid+1);  
+        if(num<k)low=mid+1;
+        else high=mid-1;
+    }
+    return k+low;
+}
+
 int main(){
     cout<<sqaure_root(28);
     cout<<nth_root(28,3);
@@ -148,5 +162,7 @@ int main(){
     cout<<mini_day(arr1,8,2,3);
     int ship[]={1,2,3,4,5,6,7,8,9,10};
     cout<<capacity(ship,10,5);
+     int k[]={2,3,4,7,11};
+    cout<<kth_number(k,5,5);
     return 0;
 }
