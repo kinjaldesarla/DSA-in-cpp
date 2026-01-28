@@ -190,6 +190,13 @@ Node* insertval(Node* head,int ele,int val){
 }
 
 
+// 1. delete the node if head is not given and the deleting node is not tail
+// 4 5 1 9
+void dele(Node* node){
+    node->data=node->next->data;  // 4 1 1 9
+    node->next=node->next->next;  // 4 1 9
+}
+
 int main(){
     vector<int>arr={2,5,6,3};
     Node* head=array_linkedlist(arr);
