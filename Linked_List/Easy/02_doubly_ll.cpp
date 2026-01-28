@@ -159,6 +159,23 @@ void insert_before_node(Node* temp,int val){
     Node* newnode=new Node(val,temp,prev);
     prev->next=temp->back=newnode;
 }
+
+// 1. reverse the dll
+Node* reverse_dll(Node* head){
+    if(head==NULL||head->next==NULL)return head;
+    Node* curr=head;
+   while(curr!=NULL){ 
+     // Swap next and back pointers of current node
+        Node* temp = curr->next;
+        curr->next = curr->back;
+        curr->back = temp;
+        // move 
+        head=curr;
+        curr=temp;
+   }
+   return head;
+}
+
 int main(){
     vector<int>arr={2,5,6,3};
     Node* head=array_doublylinkedlist(arr);
@@ -169,6 +186,8 @@ int main(){
     head=insert_before_kth(head,100,4);
     print(head);
     insert_before_node(head->next,100);
+    print(head);
+    head=reverse_dll(head);
     print(head);
     return 0;
 }
