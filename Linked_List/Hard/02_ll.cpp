@@ -4,10 +4,12 @@ class Node{
     public:
     int data;
     Node*next;
+    Node* random;
     public:
     Node(int data1){
         data=data1;
         next=nullptr;
+        random=nullptr;
     }
 
 };
