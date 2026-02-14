@@ -73,8 +73,45 @@ void str2(string s){
     genrate_str(s,"",0);
 }
 
+// 4. Count all subsequences with sum K   TC==>o(2^n)   SC==>o(n)
+int count_subsequ(int arr[],int index,int n,int s,int sum){
+    // base case
+    if(index==n){
+        if(sum==s)return 1;
+        else return 0;
+    }
+    // take it
+    sum+=arr[index];
+    int left=count_subsequ(arr,index+1,n,s,sum);
+    sum-=arr[index];
+    // not take it
+    int right=count_subsequ(arr,index+1,n,s,sum);
+    return left+right;
+}
+
+// 5. Check if there exists a subsequence with sum K
+bool check_subsequ(int arr[],int index,int n,int s,int sum){
+    // base case
+    if(index==n){
+        if(sum==s)return true;
+        else return false;
+    }
+    // take it
+    sum+=arr[index];
+    if(check_subsequ(arr,index+1,n,s,sum)==true){
+        return true;
+    }
+    sum-=arr[index];
+    // not take it
+    if(check_subsequ(arr,index+1,n,s,sum)==true){
+        return true;
+    }
+    return false;
+}
 
 int main(){
-   str2("abc");
+//    str2("abc");
+   int arr[]={1,2,1};
+   cout<<check_subsequ(arr,0,3,5,0);
     return 0;
 }
