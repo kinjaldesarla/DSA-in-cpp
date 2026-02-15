@@ -50,6 +50,7 @@ void parentheses(int n){
 // TC==>o(2^n * n)   SC==>o(1)
 void str1(string s){
    int n=s.length();
+   // 1<<n is 2^n
     for(int i=0;i<(1<<n);i++){
         string ans="";
         for(int j=0;j<n;j++){
