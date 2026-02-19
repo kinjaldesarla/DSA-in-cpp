@@ -103,6 +103,51 @@ vector<vector<int>> subsetsWithDup(int arr[],int n) {
     }
 }
 
+// 5. Combination Sum III   TC==>o(2^9*k)  SC==>o(k)
+ void  recursive(int k,int n,int index,vector<vector<int>> &ans,vector<int> &ds){
+     if(ds.size()==k && n==0){
+        ans.push_back(ds);
+        return;
+     }
+     if(ds.size()>k||n<=0)return;
+     for(int i=index;i<=9;i++){
+        if(i<=n){
+            ds.push_back(i);
+            recursive(k,n-i,i+1,ans,ds);
+            ds.pop_back();
+        }
+        else{
+            break;
+        }
+     }
+   }   
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        vector<int> ds;
+        recursive(k,n,1,ans,ds);
+        return ans;
+    }
+
+// 6. Letter Combinations of a Phone Number  TC==>o(4^n)   SC==>o(n)
+void recursive(string digits,int index,vector<string> &ans,vector<string> mapping,string curr){
+        if(index==digits.size()){
+            ans.push_back(curr);
+            return;
+        }
+        int digit=digits[index]-'0';
+        for(int i=0;i<mapping[digit].size();i++){
+            curr.push_back(mapping[digit][i]);
+            recursive(digits,index+1,ans,mapping,curr);
+            curr.pop_back();
+        }
+    }    
+vector<string> letterCombinations(string digits) {
+        vector<string> mapping={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        vector<string> ans;
+        recursive(digits,0,ans,mapping,"");
+        return ans;
+    }
+
 int main(){
     int arr[]={2,3,6,7};
     vector<vector<int>> ans=combinationSum(arr,7,4);
