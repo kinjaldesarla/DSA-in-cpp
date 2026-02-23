@@ -31,6 +31,42 @@ using namespace std;
         sudokuRecu(board);
     }
 
+
+//2. Expression Add Operators   TC==>o(4^n)   SC==>o(n)
+  void addOperators_rec(string num,int target,int index,long long current_value, long long last_operand,string expression,vector<string> &result){
+        if(index==num.size()){
+            if(current_value==target){
+           result.push_back(expression);
+            return;
+            }
+        }
+        for(int i=index;i<num.size();i++){
+            //Skip leading zeros in numbers
+            if(i>index && num[index]=='0')return;
+            string current_num = num.substr(index, i - index + 1); 
+            long long current_num_val = stoll(current_num);
+                  // If we are at the first number, just start the expression
+            if (index == 0) {
+                addOperators_rec(num, target, i + 1, current_num_val, current_num_val, current_num, result);
+            } else {
+                // Add the current number with '+'
+              addOperators_rec(num, target, i + 1, current_value + current_num_val, current_num_val, expression + "+" + current_num, result);
+                
+                // Add the current number with '-'
+                addOperators_rec(num, target, i + 1, current_value - current_num_val, -current_num_val, expression + "-" + current_num, result);
+                
+                // Add the current number with '*'
+               addOperators_rec(num, target, i + 1, current_value - last_operand + last_operand * current_num_val, last_operand * current_num_val, expression + "*" + current_num, result);
+            }
+        }
+    }    
+
+    vector<string> addOperators(string num, int target) {
+        vector<string>ans;
+        string s;
+        addOperators_rec(num,target,0,0,0,"",ans);
+        return ans;
+    }    
 int main(){
     return 0;
 }
