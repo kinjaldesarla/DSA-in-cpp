@@ -66,7 +66,29 @@ using namespace std;
         string s;
         addOperators_rec(num,target,0,0,0,"",ans);
         return ans;
-    }    
+    } 
+    // 3. Word Break (required DP as by normal rec TLE)
+    bool  wordBreakRec(string s, vector<string>& wordDict,int index){
+        if(index==s.size()){
+            return true;
+        }
+        for(int i=0;i<wordDict.size();i++){
+            int wordSize=wordDict[i].size();
+            string demo=s.substr(index,wordSize);
+            if(wordDict[i]==demo){
+               if(wordBreakRec(s,wordDict,index+wordSize))return true;
+            }
+        }
+        return false;
+     }
+
+     bool wordBreak(string s, vector<string>& wordDict) {
+        return wordBreakRec(s, wordDict,0);
+    }
+    
 int main(){
+     string s = "aaaaaaa";
+     vector<string> wordDict = {"a","aa","aaa"};
+     cout<<wordBreak(s,wordDict);
     return 0;
 }
