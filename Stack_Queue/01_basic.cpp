@@ -3,25 +3,25 @@ using namespace std;
 
 // 1.Implement Stack using Arrays
 class ArrayStack{
-    int top=-1;
+    int topindex=-1;
     int arr[10];
     void push(int x){
-        if(top>=10)cout<<"stack overflow";
+        if(topindex>=10)cout<<"stack overflow";
         else{
-         top++;
-         arr[top]=x;
+         topindex++;
+         arr[topindex]=x;
         }
     }
    void pop(){
-        if(top==-1)cout<<"stack empty";
-        else  top--;
+        if(topindex==-1)cout<<"stack empty";
+        else  topindex--;
     }
     int top(){
-        if(top==-1)cout<<"stack empty";
-        else return arr[top];
+        if(topindex==-1)cout<<"stack empty";
+        else return arr[topindex];
     }
     int size(){
-        return top+1;
+        return topindex+1;
     }
 };
 
@@ -38,6 +38,8 @@ class ArrayQueue{
         }
         if(currsize==0){
             start=0,end=0;
+            arr[end]=x;
+           currsize++;
         }
         else{
           end=(end+1)%10;
@@ -81,26 +83,26 @@ struct Node{
 };
 class LinkedlistStack{
     private:
-    Node* top;    // top of stack
-    int size=0;
+    Node* head = nullptr;   // top of stack
+    int sz=0;
     public:
     void push(int x){
         Node* temp= new Node(x);
-        temp->next=top;
-        top=temp;
-        size++;
+        temp->next=head;
+        head=temp;
+        sz++;
     }
     void pop(){
-        Node* temp=top;
-        top=top->next;
-        size--;
+        Node* temp=head;
+        head=head->next;
+        sz--;
         delete temp;
     }
     int top(){
-        return top->data;
+        return head->data;
     }
     int size(){
-        return size;
+        return sz;
     }
 };
 
@@ -109,7 +111,7 @@ class LinkedlistQueue{
     private:
     Node* start;
     Node* end;
-    int size=0;
+    int sz=0;
 
     public:
     void push(int x){
@@ -121,19 +123,19 @@ class LinkedlistQueue{
             end->next=temp;
             end=temp;
         }
-        size++;
+        sz++;
     }
     void pop(){
         Node* temp=start;
         start=start->next;
-        size--;
+        sz--;
         delete temp;
     }
     int top(){
         return start->data;
     }
     int size(){
-        return size;
+        return sz;
     }
 };
 
@@ -241,7 +243,85 @@ public:
     }
 };
 
+// 7. Balanced Paranthesis  TC==>o(n)  SC==>o(n)
+ bool isValid(string s) {
+       stack<char>st;
+       for(int i=0;i<s.size();i++){
+        if(s[i]=='('||s[i]=='{'||s[i]=='[')st.push(s[i]);
+        else{
+            if(st.empty())return false;
+            char ch=st.top();
+            st.pop();
+            if((s[i]==')'&&ch=='(')||(s[i]=='}'&&ch=='{')||(s[i]==']'&&ch=='['))continue;
+            else return false;
+        }
+       }
+       return st.empty();
+    }
+
+
+// 8. Implement Min Stack  
+//  TC==>o(1)  SC==>o(2n)
+class MinStack {
+    stack<pair<int,int>>s;  
+    void push(int val) {
+     if(s.empty()) s.push({val,val});
+     else {
+        s.push({val,min(val,s.top().second)});
+     }
+    }
+    
+    void pop() {
+        s.pop();
+    }
+    
+    int top() {
+        return s.top().first;
+    }
+    
+    int getMin() {
+        return s.top().second;
+    }
+};    
+
+// TC==>o(1)  SC==>o(n)
+class MinStack1{
+    stack<long long>s;
+    long long mini;
+    void push(int val){
+        long long x=val;
+        if(s.empty()){
+            mini=x;
+            s.push(x);
+        }
+        else{
+            if(x<mini){
+                s.push(2*x-mini);
+                mini=x;
+            }
+            else s.push(x);
+        }
+    }
+    void pop(){
+        long long el=s.top();
+        s.pop();
+        if(el<mini){
+            mini=2*mini-el;
+        }
+    }
+    int top(){
+        long long el=s.top();
+        if(el<mini){
+            return mini;
+        }
+        return el;
+    }
+    int getMin() {
+        return mini;
+    }
+};
 
 int main(){
+    cout<<isValid("()[{}(()]");
     return 0;
 }
